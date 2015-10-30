@@ -1,27 +1,36 @@
-## Laravel PHP Framework
+# ERS Reviewers Invitation App
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+The app is designed to let an ERS chair who has an account in myERS to login with the myERS credentials. He comes to a dashboard where he sees how many reviewers he needs to invite (or suggest to invite). He can search our database to see if the person he wants to invite is already known by the ERS. If he selects a person (mouse or enter) the form is prefilled for him. He just need to hit the "invite/suggest" button in order to validate his choice. He has no way back. 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Administration
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+There are two tables `permissions` and `all_ers_contacts` that need to be managed. 
 
-## Official Documentation
+The `permissions` tables uses the ers_id of the chair and an integer for the amount of invite he needs to send. 
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+The `all_ers_contacts` is a simplefied version of our all contacts list where we use the `ers_id`, `last_name`, `first_name`, `city`, `country`, `title`, and `email`.
 
-## Contributing
+You can import a permission file and you need to split in many files the contact list as for now it is poorly handeled.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+There are two routes to import the files !! do not go on the all contacts without a reason !! as it will blow the server. 
 
-## Security Vulnerabilities
+* /importpermissions
+* /importallcontacts
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+There is a controller that handle the upload: App/Http/Controllers/Import.php there you can change the file names.
 
-### License
+## To do
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+[] fix the import
+[] create an export
+
+
+### Official Documentations
+
+* Documentation for the Laravel framework can be found on the [Laravel website](http://laravel.com/docs).
+* Documentation for the [Excel import/export](www.maatwebsite.nl/laravel-excel/)
+* Documentation for [Vue](http://vuejs.org/guide/).
+* Documentation for [Vue ressource](https://github.com/vuejs/vue-resource).
+* Documentation for [Vue validator](https://github.com/vuejs/vue-validator).
+* Documentation for [Typeahead](https://github.com/twitter/typeahead.js).
+
