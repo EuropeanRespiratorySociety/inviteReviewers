@@ -21,8 +21,8 @@ There is a controller that handle the upload: App/Http/Controllers/Import.php th
 
 ## To do
 
-- [] fix the import
-- [] create an export
+- [ ] fix the import
+- [ ] create an export
 
 
 ### Official Documentations
