@@ -1,0 +1,13 @@
+{
+  "name": "ERSTools",
+  "description": "Tools for ERS",
+  "license": "MIT",
+      "private": true,
+    "dependencies": {
+        "jquery": ">= 1.9.0",
+        "uikit": ">= 2.23.0"
+    }
+      
+
+
+}

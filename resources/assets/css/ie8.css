@@ -1,0 +1,29 @@
+/* Copyright (C) YOOtheme GmbH, http://www.gnu.org/licenses/gpl.html GNU/GPL */
+
+/* ========================================================================
+   Defines styles for Internet Explorer 8
+ ========================================================================== */
+
+.ers-navbar-desktop .uk-navbar-nav > li.uk-active > a{
+    background-color: #00487f;
+}
+.ers-navbar-desktop .uk-navbar-nav > li > a:hover,
+.ers-navbar-desktop .uk-navbar-nav > li.uk-open > a{
+    color: #444444;
+}
+.ers-edition-navbar .uk-navbar-nav > li.uk-active > a {
+    background-color: #E5E5E5;
+}
+.ers-white-navbar .uk-navbar-nav > li.uk-active > a{
+    background-color: #F2F2F2;
+}
+.ers-navbar-desktop .uk-navbar-nav > li > a{
+    color: #ffffff;
+}
+.ers-white-navbar .uk-navbar-nav > li > a,
+.ers-edition-navbar .uk-navbar-nav > li > a {
+    color: #444444;
+}
+.ers-navbar-desktop .uk-navbar-nav > li > .uk-dropdown > ul > li > a:hover{
+    background-color: #E5E5E5;
+}
