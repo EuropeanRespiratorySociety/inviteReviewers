@@ -29,7 +29,8 @@ new Vue({
 			first_name:''
 		},
 
-		quantity: {},
+		quantity: 0,
+		notAllowed: false,
 
 		submitted: false,
 
@@ -38,6 +39,13 @@ new Vue({
 	ready: function(){
 
 		this.fetchInvitedReviewers();
+
+		/*
+		todo it breaks the search...
+		if(!this.quantity === true && !submitted) {
+				this.$set('notAllowed', true)
+			}
+		*/	
  
     	var ersContacts = new Bloodhound({
 			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
@@ -94,8 +102,14 @@ new Vue({
 	methods: {
 		fetchInvitedReviewers: function() {
 			this.$http.get('api', function(response) {
-				this.$set('reviewers', response.reviewers);
-				this.$set('quantity', response.quantity); 
+			
+			this.$set('reviewers', response.reviewers);
+			this.$set('quantity', response.quantity);	
+
+			if(response.quantity <= 0){
+				this.submitted = true;
+			}
+
 			});
 		},
 
@@ -111,18 +125,20 @@ new Vue({
 			this.newReviewer = {title:'', last_name: '', first_name: '', email:'', ers_id:'null'}
 			this.search = { last_name: '', first_name: ''};
 			
-			//substract one to the quantity
-			this.quantity -= 1 ;
 			
 			//sent post ajax request
-			//this.$http.post('api/store', reviewer)
+			if(!this.quantity <= 0) {
+				this.$http.post('api/store', reviewer)
+			}
+
+			//substract one to the quantity
+			this.quantity -= 1 ;
 
 			//show success and count how many left
 			if(this.quantity <= 0) {
 			this.submitted = true;
 			}
 		}
-
 		
 	},
 

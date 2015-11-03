@@ -2,13 +2,17 @@
 
 	@section('content')
 	<div id="invite" style="padding-left:35px"> 
-	<div class="uk-grid uk-text-center">
-		<h1 class="uk-container-center" style="margin-top:50px;"> You have still @{{quantity}} reviewers to suggest</h1>
+
+	<div v-if="notAllowed" class="uk-grid uk-text-center">
+		<h1 class="uk-container-center" style="margin-top:50px;"> You are not allowed to suggest reviewers</h1>
+	</div>
+	<div v-if="! submitted" class="uk-grid uk-text-center">
+		<h1 v-if="!notAllowed" class="uk-container-center" style="margin-top:50px;"> You have still @{{quantity}} reviewers to suggest</h1>
 	</div>
 	<div class="uk-grid uk-grid-medium">
-		<div class="uk-width-medium-1-3 uk-grid-width-small-1-1">
-			<h2 style="margin-top:30px;" class="uk-text uk-text-center">Step 1</h2>
-			<div class="uk-grid">
+		<div v-if="! submitted" class="uk-width-medium-1-3 uk-grid-width-small-1-1">
+			<h2 v-if="!notAllowed" style="margin-top:30px;" class="uk-text uk-text-center">Step 1</h2>
+			<div v-if="!notAllowed" class="uk-grid">
 				<div style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 					<div class="uk-panel-title">Search for an existing ERS Contact</div>
 					<p class="uk-text-muted">Start typing, you will get suggestions from our database.
@@ -26,12 +30,13 @@ If you find no one fill in manualy the form on the right.
 					</form>
 				</div>
 			</div>
-		</div>
 
-		<div class="uk-width-medium-1-3 uk-grid-width-small-1-1">
-			<h2 style="margin-top:30px;" class="uk-text uk-text-center">Step 2</h2>
-			@include('flash')
-			<div class="uk-grid">
+		</div>
+		<div v-if="submitted" class="uk-width-medium-1-3 uk-grid-width-small-1-1">
+		</div>
+		<div v-if="! submitted" class="uk-width-medium-1-3 uk-grid-width-small-1-1">
+			<h2 v-if="!notAllowed" style="margin-top:30px;" class="uk-text uk-text-center">Step 2</h2>
+			<div v-if="!notAllowed" class="uk-grid">
 				<div id="scrollable-dropdown-menu" style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 					<div class="uk-panel-title">Select a reviewer</div>
 
@@ -82,16 +87,16 @@ If you find no one fill in manualy the form on the right.
 						<!-- Submit Button -->      
 						<div v-if="! submitted" class="uk-form-row">
 							<button 
-							type="submit" value="Invite" 
+							type="submit" value="Suggest" 
 							class="uk-form-large uk-button uk-button-large uk-width-1-1"
 							v-if="invalid"
 							disabled
 							>Select</button>
 							<button 
-							type="submit" value="Invite" 
+							type="submit" value="Suggest" 
 							class="uk-form-large uk-button uk-button-large uk-width-1-1"
 							v-if="valid"
-							>Invite</button>
+							>Select</button>
 						</div>  
 						<ul class="uk-list uk-text-danger">
 							<li v-if="validation.newReviewer.last_name.invalid && validation.newReviewer.last_name.dirty">
@@ -108,12 +113,12 @@ If you find no one fill in manualy the form on the right.
 				</div>
 			</div>
 		</div>
-		<div class="uk-width-medium-1-3 uk-grid-width-small-1-1">
-				<h2 style="margin-top:30px;" class="uk-text uk-text-center">Step 3</h2>
+		<div v-if="!notAllowed" class="uk-width-medium-1-3 uk-grid-width-small-1-1">
+				<h2 v-if="! submitted" style="margin-top:30px;" class="uk-text uk-text-center">Step 3</h2>
 				<div class="uk-grid">
 					<div style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 						<div class="uk-panel-title">Selected reviewers</div>
-						<div class="uk-alert uk-alert-success" v-if="submitted"><p>Thank you</p></div>
+						<div class="uk-alert uk-alert-success" v-if="submitted"><p>Thank you for your help, you have selected all the reviewers you could.</p></div>
 						<ul class="uk-list uk-list-striped" v-repeat="reviewers">
 							<li>
 								<h3 class="uk-title" style="margin:0;">
@@ -125,6 +130,7 @@ If you find no one fill in manualy the form on the right.
 						</ul>
 					</div>
 				</div>
+
 		</div>
 	</div>
 </div>
