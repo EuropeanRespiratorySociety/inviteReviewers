@@ -118,9 +118,19 @@ If you find no one fill in manualy the form on the right.
 				<div class="uk-grid">
 					<div style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 						<div class="uk-panel-title">Selected reviewers</div>
-						<div class="uk-alert uk-alert-success" v-if="submitted"><p>Thank you for your help, you have selected all the reviewers you could.</p></div>
-						<ul class="uk-list uk-list-striped" v-repeat="reviewers">
-							<li>
+						<div class="uk-alert uk-alert-success uk-animation-scale-up" v-if="submitted">
+							<p>Thank you for your help, you have selected all the reviewers you could.</p>
+						</div>
+						<div class="uk-alert uk-alert-success uk-animation-scale-up" v-if="message">
+							<p>@{{ message }}</p>
+						</div>
+						<div class="uk-alert uk-alert-danger uk-animation-scale-up" v-if="error">
+							<p>@{{ error }}</p>
+						</div>
+						<ul class="uk-list">
+							<li class="uk-animation-scale-up"
+							v-repeat="reviewers"
+							>
 								<h3 class="uk-title" style="margin:0;">
 										@{{ title }} @{{ first_name }} @{{ last_name }}
 								</h3>		

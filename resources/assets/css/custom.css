@@ -801,8 +801,9 @@ code .value{
       letter-spacing: 0;
     }
 
-    .uk-list-striped > li:nth-of-type(2n+1) {
+    .uk-list > li {
     background: #eee none repeat scroll 0 0;
     border: 1px solid #fff;
     padding: 15px;
+    margin-bottom: 10px;
 }

@@ -36,7 +36,7 @@ elixir(function(mix) {
     		'jquery.js',
     		'uikit.js',
     		'erskit.js',
-    		'typeahead.js'
+            'typeahead.js'
     	]);
 
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class ApiController extends Controller
 {
@@ -26,13 +27,13 @@ class ApiController extends Controller
     {
         $reviewers = DB::table('reviewers')->where('user_id', '=', Auth::user()->id)->get();
         $totalReviewers = count($reviewers);
-
-        $response['reviewers'] = $reviewers;
         
         $quantity = DB::table('invitation_permissions')->where('ers_id', '=', Auth::user()->ers_id)->get();
-        $response['quantity'] = $quantity['0']->quantity - $totalReviewers;
 
-        return $response;
+        return Response::json([
+                'reviewers' => $reviewers,
+                'quantity'  => $quantity['0']->quantity - $totalReviewers
+            ], 200);
     }
 
     /**
@@ -53,7 +54,21 @@ class ApiController extends Controller
      */
     public function store(Request $request)
     {
-        Auth::user()->reviewers()->create($request->all());
+        //check that the sent reviwer is not already invited
+        $reviewer = DB::table('reviewers')->where('ers_id', '=', $request->ers_id)->get();
+
+
+        if(!$reviewer){
+            $newReviewer = Auth::user()->reviewers()->create($request->all());
+            return Response::json([
+                'reviewer'  => $newReviewer->toArray(),
+                'message'   => "The reviewer has been added to the list"
+            ], 200);
+        }
+
+        return Response::json([
+                'message'   => "The reviewer has already been added. Select someone else."
+            ], 422);
     }
 
     /**
@@ -69,7 +84,6 @@ class ApiController extends Controller
          $search = array();
 
          if(!$results){
-
             return $search;
          }
 

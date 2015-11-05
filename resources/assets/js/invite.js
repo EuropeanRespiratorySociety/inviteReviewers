@@ -23,7 +23,7 @@ new Vue({
 			ers_id:'null'
 		},
 
-		reviewers: {},
+		reviewers: [],
 		search: {
 			last_name:'',
 			first_name:''
@@ -31,8 +31,10 @@ new Vue({
 
 		quantity: 0,
 		notAllowed: false,
+		error: null,
+		message: null,
 
-		submitted: false,
+		submitted: false
 
 	},
 
@@ -115,11 +117,9 @@ new Vue({
 
 		onSubmitForm: function(e){
 			e.preventDefault();
-			
+			this.error = null;
+			this.message = null;
 			var reviewer = this.newReviewer;
-			
-			//add new reviewer to reviewers array
-			this.reviewers.push(reviewer);
 			
 			//reset input values
 			this.newReviewer = {title:'', last_name: '', first_name: '', email:'', ers_id:'null'}
@@ -128,16 +128,29 @@ new Vue({
 			
 			//sent post ajax request
 			if(!this.quantity <= 0) {
-				this.$http.post('api/store', reviewer)
+				this.$http.post(
+					'api/store', 
+					reviewer,
+					function(success){
+						this.$set('reviewer', success.reviewer);
+						this.$set('message', success.message);
+						//add new reviewer to reviewers array
+						this.reviewers.unshift(reviewer);
+						//substract one to the quantity
+						this.quantity -= 1 ;
+						//show success and count how many left
+						if(this.quantity <= 0) {
+						this.submitted = true;
+						}
+
+					}).error(function(data){
+						this.$set('error', data.message);
+					})
 			}
 
-			//substract one to the quantity
-			this.quantity -= 1 ;
 
-			//show success and count how many left
-			if(this.quantity <= 0) {
-			this.submitted = true;
-			}
+
+
 		}
 		
 	},
