@@ -151,7 +151,7 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
         App\Providers\ErsAuthServiceProvider::class,
 
-        Laracasts\Flash\FlashserviceProvider::class,
+        //Laracasts\Flash\FlashserviceProvider::class,
         Artisaninweb\SoapWrapper\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //Mmanos\Search\SearchServiceProvider::class,
