@@ -26,11 +26,16 @@ class ApiController extends Controller
     public function index()
     {
         $reviewers = DB::table('reviewers')->where('user_id', '=', Auth::user()->id)->get();
+        $selfAsReviewer = DB::table('reviewers')->where('user_id', '=', Auth::user()->ers_id)->get();
         $totalReviewers = count($reviewers);
+        if($selfAsReviewer){
+            ++$totalReviewers;
+        }
         
         $quantity = DB::table('invitation_permissions')->where('ers_id', '=', Auth::user()->ers_id)->get();
 
         return Response::json([
+                'self'      => $selfAsReviewer,
                 'reviewers' => $reviewers,
                 'quantity'  => $quantity['0']->quantity - $totalReviewers
             ], 200);
@@ -58,17 +63,19 @@ class ApiController extends Controller
         $reviewer = DB::table('reviewers')->where('ers_id', '=', $request->ers_id)->get();
 
 
-        if(!$reviewer){
-            $newReviewer = Auth::user()->reviewers()->create($request->all());
-            return Response::json([
-                'reviewer'  => $newReviewer->toArray(),
-                'message'   => "The reviewer has been added to the list"
-            ], 200);
+        
+        $newReviewer = Auth::user()->reviewers()->create($request->all());
+        
+        if(!$newReviewer){
+           return Response::json([ 
+                'message'   => "Ooops, something went wrong"
+            ], 422);  
         }
 
         return Response::json([
-                'message'   => "The reviewer has already been added. Select someone else."
-            ], 422);
+                'reviewer'  => $newReviewer->toArray(),
+                'message'   => "The reviewer has been added to the list"
+            ], 200);
     }
 
     /**

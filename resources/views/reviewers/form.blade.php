@@ -6,6 +6,13 @@
 	<div v-if="notAllowed" class="uk-grid uk-text-center">
 		<h1 class="uk-container-center" style="margin-top:50px;"> You are not allowed to suggest reviewers</h1>
 	</div>
+	<div v-if="! submitted" class="uk-grid">
+		<h3 v-if="!notAllowed" class="" style="margin-top:50px;"> Welcome {{ $user->name }}
+		@if($user->group)
+		<p class="uk-text uk-text-muted uk-text-small">You are chair of group: {{ $user->group }}</p>
+		@endif
+		</h3>
+	</div>
 	<div v-if="! submitted" class="uk-grid uk-text-center">
 		<h1 v-if="!notAllowed" class="uk-container-center" style="margin-top:50px;"> You have still @{{quantity}} reviewers to suggest</h1>
 	</div>
@@ -138,6 +145,9 @@ If you find no one fill in manualy the form on the right.
 								
 							</li>
 						</ul>
+						<div class=" uk-text uk-text-muted uk-alert uk-alert-info uk-animation-scale-up" v-if="self">
+							<p>As chair of a group, you have automatically been added as a reviewer of this group</p>	
+						</div>
 					</div>
 				</div>
 

@@ -24,6 +24,7 @@ new Vue({
 		},
 
 		reviewers: [],
+		self: [],
 		search: {
 			last_name:'',
 			first_name:''
@@ -106,7 +107,9 @@ new Vue({
 			this.$http.get('api', function(response) {
 			
 			this.$set('reviewers', response.reviewers);
-			this.$set('quantity', response.quantity);	
+			this.$set('quantity', response.quantity);
+			//we add the user as one of the rievewers
+			this.$set('self', response.self);	
 
 			if(response.quantity <= 0){
 				this.submitted = true;

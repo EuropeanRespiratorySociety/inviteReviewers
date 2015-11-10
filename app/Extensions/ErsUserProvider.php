@@ -3,8 +3,9 @@
 namespace App\Extensions;
 
 use App\User;
-use App\Extensions\ErsSoapWrapper;
+use App\Reviewer;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
@@ -76,6 +77,9 @@ class ErsUserProvider implements UserProvider
         if(!$result){
 
         	$this->userCreateOrUpdate($credentials, false);
+            //as it is the first login of the person, we need 
+            //to add this person as the reviewer of his own group
+            $this->addUserAsReviewer($credentials);
 
         	return $this->checkUser($credentials, $query);
 
@@ -83,6 +87,8 @@ class ErsUserProvider implements UserProvider
 
         //if the user is in DB we update it in case he chaged his details
         $this->userCreateOrUpdate($credentials, $result['attributes']['id']);
+        
+        $this->addUserAsReviewer($credentials);
 
         return $result;
 
@@ -178,6 +184,27 @@ class ErsUserProvider implements UserProvider
 			User::find($id)->update($user);
 		}
 
+    }
+
+    protected function addUserAsReviewer($credentials){
+        
+        $user = [
+                'title'      => $credentials['title'],
+                'last_name'  => $credentials['last_name'],
+                'first_name' => $credentials['first_name'],
+                'email'      => $credentials['email'],
+                'ers_id'     => $credentials['ers_id'],
+                'user_id'    => $credentials['ers_id']
+                ] ;
+
+        //check is the user is alredy a reviewer in his own group (added by himself...)
+        $selfAsReviewer = DB::table('reviewers')
+                            ->where('ers_id', $user['ers_id'])
+                            ->where('user_id', $user['ers_id'])
+                            ->get();
+        if(!$selfAsReviewer){
+            Reviewer::Create($user);
+        }
     }
 
     protected function checkUser($credentials, $query){

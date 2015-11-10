@@ -85,6 +85,9 @@ class AuthController extends Controller
         });
        
             $credentials['name'] = $data->fname.' '.$data->lname;
+            $credentials['last_name'] = $data->lname;
+            $credentials['first_name'] = $data->fname;
+            $credentials['title'] = $data->title;
             $credentials['email'] = $data->email;
             $credentials['ers_id'] = $data->partnerId;
             $credentials['isInDB'] = $data->isInDB;

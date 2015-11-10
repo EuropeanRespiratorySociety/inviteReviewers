@@ -19,10 +19,11 @@ class Reviewer extends Model
      * @var array
      */
     protected $fillable = [
+                    'user_id',  
                     'ers_id',  
                     'title',
                     'first_name',
-                    'last_name', 
+                    'last_name',
                     'email', ];
 
     
