@@ -6,9 +6,6 @@
 	<div v-if="notAllowed" class="uk-grid uk-text-center">
 		<h1 class="uk-container-center" style="margin-top:50px;"> You are not allowed to suggest reviewers</h1>
 	</div>
-	<pre>
-		@{{ $data | json }}
-	</pre>
 	<div v-if="! submitted" class="uk-grid">
 
 		<h3 v-if="!notAllowed" class="" style="margin-top:50px;"> Welcome {{ $user->name }}
