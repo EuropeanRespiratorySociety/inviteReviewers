@@ -25,7 +25,7 @@ class ReviewersController extends Controller
     {
         if (Auth::check()) {
             $userId = Auth::user()->id;
-            $user = Auth::user()->first();
+            $user = Auth::user();
         }       
 
         return view('reviewers.form')->with('user', $user);

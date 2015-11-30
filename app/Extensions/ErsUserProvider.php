@@ -172,7 +172,8 @@ class ErsUserProvider implements UserProvider
 			 	'name' 		=> $credentials['name'],
 			 	'username'	=> $credentials['username'],
 			 	'password'	=> bcrypt($credentials['password']),
-			 	'email'		=> $credentials['email'],
+                'email'     => $credentials['email'],
+                'group'     => $credentials['group'],
 			 	'ers_id'	=> $credentials['ers_id']
 			 	] ;
 

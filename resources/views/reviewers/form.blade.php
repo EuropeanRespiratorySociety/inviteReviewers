@@ -6,15 +6,19 @@
 	<div v-if="notAllowed" class="uk-grid uk-text-center">
 		<h1 class="uk-container-center" style="margin-top:50px;"> You are not allowed to suggest reviewers</h1>
 	</div>
+	<pre>
+		@{{ $data | json }}
+	</pre>
 	<div v-if="! submitted" class="uk-grid">
+
 		<h3 v-if="!notAllowed" class="" style="margin-top:50px;"> Welcome {{ $user->name }}
 		@if($user->group)
-		<p class="uk-text uk-text-muted uk-text-small">You are chair of group: {{ $user->group }}</p>
+		<p class="uk-text uk-text-muted uk-text-small">ERS group: {{ $user->group }}</p>
 		@endif
 		</h3>
 	</div>
 	<div v-if="! submitted" class="uk-grid uk-text-center">
-		<h1 v-if="!notAllowed" class="uk-container-center" style="margin-top:50px;"> You have still @{{quantity}} reviewers to suggest</h1>
+		<h1 v-if="!notAllowed" class="uk-container-center" style="margin-top:50px;"> You still have @{{quantity}} reviewers to select.</h1>
 	</div>
 	<div class="uk-grid uk-grid-medium">
 		<div v-if="! submitted" class="uk-width-medium-1-3 uk-grid-width-small-1-1">
@@ -22,9 +26,9 @@
 			<div v-if="!notAllowed" class="uk-grid">
 				<div style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 					<div class="uk-panel-title">Search for an existing ERS Contact</div>
-					<p class="uk-text-muted">Start typing, you will get suggestions from our database.
-you can select somone with the arrow key or with the mouse, hit enter or click to validate your selection.
-If you find no one fill in manualy the form on the right.
+					<p class="uk-text-muted">Type the contact name you are looking for, and select the right person suggested from ERS database. 
+						To select someone, use the arrow key / hit enter or click to validate your selection. 
+						If you do not find the person you want to invite, simply fill in manually the form on Step 2.
 					</p>
 					<form class="uk-form">
 						<input type="text" 
@@ -46,7 +50,10 @@ If you find no one fill in manualy the form on the right.
 			<div v-if="!notAllowed" class="uk-grid">
 				<div id="scrollable-dropdown-menu" style="margin-top:30px;"class="uk-panel uk-panel-header uk-panel-box uk-width-1-1 uk-container-center">
 					<div class="uk-panel-title">Select a reviewer</div>
-
+					<p class="uk-text-muted">Note that once you select a reviewer, you will not be able to change it. 
+						Please contact <a href="mailto:scientific@ersnet.org" target="_blank">scientific@ersnet.org</a> 
+						if you want to change the selected reviewers list.
+					</p>
 					<form method="POST" v-on="submit: onSubmitForm" class="uk-form">
 
 						<div class="uk-form-row">
@@ -134,6 +141,12 @@ If you find no one fill in manualy the form on the right.
 						<div class="uk-alert uk-alert-danger uk-animation-scale-up" v-if="error">
 							<p>@{{ error }}</p>
 						</div>
+						<div class=" uk-text uk-text-muted uk-alert uk-alert-info uk-animation-scale-up" v-if="self">
+							<p>As chair of a group, you have automatically been added as a reviewer of this group</p>
+							<h3 class="uk-title" style="margin:0;" v-repeat="self">
+										@{{ title }} @{{ first_name }} @{{ last_name }}
+								</h3>	
+						</div>
 						<ul class="uk-list">
 							<li class="uk-animation-scale-up"
 							v-repeat="reviewers"
@@ -145,9 +158,7 @@ If you find no one fill in manualy the form on the right.
 								
 							</li>
 						</ul>
-						<div class=" uk-text uk-text-muted uk-alert uk-alert-info uk-animation-scale-up" v-if="self">
-							<p>As chair of a group, you have automatically been added as a reviewer of this group</p>	
-						</div>
+						
 					</div>
 				</div>
 

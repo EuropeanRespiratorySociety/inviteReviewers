@@ -90,6 +90,7 @@ class AuthController extends Controller
             $credentials['title'] = $data->title;
             $credentials['email'] = $data->email;
             $credentials['ers_id'] = $data->partnerId;
+            $credentials['group'] = $data->group1;
             $credentials['isInDB'] = $data->isInDB;
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
