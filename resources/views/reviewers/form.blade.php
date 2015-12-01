@@ -51,6 +51,9 @@
 						Please contact <a href="mailto:scientific@ersnet.org" target="_blank">scientific@ersnet.org</a> 
 						if you want to change the selected reviewers list.
 					</p>
+						<div class=" uk-text uk-text-muted uk-alert uk-alert-danger uk-animation-scale-up" v-if="self">
+							<h4 class="uk-text-center">First select the secretary of your group.</h4>
+						</div>
 					<form method="POST" v-on="submit: onSubmitForm" class="uk-form">
 
 						<div class="uk-form-row">
@@ -138,11 +141,12 @@
 						<div class="uk-alert uk-alert-danger uk-animation-scale-up" v-if="error">
 							<p>@{{ error }}</p>
 						</div>
+
 						<div class=" uk-text uk-text-muted uk-alert uk-alert-info uk-animation-scale-up" v-if="self">
 							<p>As chair of a group, you have automatically been added as a reviewer of this group</p>
 							<h3 class="uk-title" style="margin:0;" v-repeat="self">
 										@{{ title }} @{{ first_name }} @{{ last_name }}
-								</h3>	
+							</h3>	
 						</div>
 						<ul class="uk-list">
 							<li class="uk-animation-scale-up"
