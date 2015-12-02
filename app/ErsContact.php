@@ -11,11 +11,11 @@ class ErsContact extends Model
     
     protected $searchable = [
         'columns' => [
-            'first_name' => 10,
+            'first_name' => 8,
             'last_name' => 10,
-            'email' => 10,
-            'country' => 10,
-            'city' => 10,
+            'email' => 5,
+            'country' => 3,
+            'city' => 3,
         ],
     ];
 

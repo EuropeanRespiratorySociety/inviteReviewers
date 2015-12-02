@@ -16,9 +16,10 @@ Route::get('/', 'ReviewersController@index' );
 Route::get('api', 'ApiController@index');
 Route::post('api/store', 'ApiController@store');
 Route::get('api/search/{query}', 'ApiController@search');
+Route::get('api/search/all', 'ApiController@searchAll');
 
-Route::get('importpermissions', 'Import@importPermissions');
-Route::get('importallcontacts', 'Import@importAll');
+//Route::get('importpermissions', 'Import@importPermissions');
+//Route::get('importallcontacts', 'Import@importAll');
 
 Route::Controllers([
 

@@ -112,6 +112,39 @@ class ApiController extends Controller
     }
 
     /**
+     * Search All.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function searchAll()
+    {
+         $results = ErsContact::search('*')->get();
+
+         $search = array();
+
+         if(!$results){
+            return $search;
+         }
+
+         foreach ($results as $result) {
+
+             $search[] = [
+                    'title' => $result->title,
+                    'last_name' => $result->last_name,
+                    'first_name'=> $result->first_name,
+                    'email'=> $result->email,
+                    'city'=> $result->city,
+                    'country'=> $result->country,
+                    'ers_id'=> $result->ers_id,
+             ];
+         }
+
+         return $search;
+
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
