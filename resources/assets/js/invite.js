@@ -55,7 +55,7 @@ new Vue({
 			  queryTokenizer: Bloodhound.tokenizers.whitespace,
 			  prefetch: {
         			ttl: 0,
-        			url: 'api/search/all'
+        			url: 'api/search/all-results'
         		},
 			  remote: {
 			    url: 'api/search/%QUERY',
