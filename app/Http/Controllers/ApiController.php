@@ -112,6 +112,20 @@ class ApiController extends Controller
     }
 
     /**
+     * Search 2 for test purposes.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function search2($query)
+    {
+         $search = DB::table('all_ers_contacts')->where('last_name', '=', $query);
+
+         return $search;
+
+    }
+
+    /**
      * Search All.
      *
      * @param  int  $id

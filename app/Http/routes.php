@@ -18,6 +18,9 @@ Route::post('api/store', 'ApiController@store');
 Route::get('api/search/all-results', 'ApiController@searchAll');
 Route::get('api/search/{query}', 'ApiController@search');
 
+//test route
+Route::get('api/search2/{query}', 'ApiController@search2');
+
 //Route::get('importpermissions', 'Import@importPermissions');
 //Route::get('importallcontacts', 'Import@importAll');
 
