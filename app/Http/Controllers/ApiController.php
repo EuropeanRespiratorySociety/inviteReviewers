@@ -119,7 +119,7 @@ class ApiController extends Controller
      */
     public function searchAll()
     {
-         $results = ErsContact::search('*')->get();
+         $results = ErsContact::search('%')->get();
 
          $search = array();
 
