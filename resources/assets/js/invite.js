@@ -54,10 +54,6 @@ new Vue({
     	var ersContacts = new Bloodhound({
 			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 			  queryTokenizer: Bloodhound.tokenizers.whitespace,
-			  prefetch: {
-        			ttl: 1,
-        			url: 'api/search/all-results'
-        		},
 			  remote: {
 			    url: 'api/search/%QUERY',
 			    wildcard: '%QUERY'
