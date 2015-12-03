@@ -119,7 +119,7 @@ class ApiController extends Controller
      */
     public function search2($query)
     {
-         $search = DB::table('all_ers_contacts')->where('last_name', '=', $query);
+         $search = DB::table('all_ers_contacts')->where('last_name', '=', $query)->get();
 
          return $search;
 
