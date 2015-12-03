@@ -42,6 +42,8 @@ new Vue({
 	ready: function(){
 
 		this.fetchInvitedReviewers();
+		bloodHound.clearPrefetchCache();
+
 
 		/*
 		todo it breaks the search...
