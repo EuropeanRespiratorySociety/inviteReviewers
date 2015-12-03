@@ -42,7 +42,6 @@ new Vue({
 	ready: function(){
 
 		this.fetchInvitedReviewers();
-		bloodHound.clearPrefetchCache();
 
 
 		/*
@@ -56,7 +55,7 @@ new Vue({
 			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
 			  queryTokenizer: Bloodhound.tokenizers.whitespace,
 			  prefetch: {
-        			ttl: 0,
+        			ttl: 1,
         			url: 'api/search/all-results'
         		},
 			  remote: {
