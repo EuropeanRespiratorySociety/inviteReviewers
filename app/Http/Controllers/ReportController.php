@@ -25,7 +25,7 @@ class ReportController extends Controller
     {
         $user = Auth::user();
 
-        if(!$user->ers_id == 203041 || !$user->ers_id == 308224){
+        if($user->ers_id != 203041 || $user->ers_id != 308224){
             abort(404);
         }
 
