@@ -25,9 +25,17 @@ class ReportController extends Controller
     {
         $user = Auth::user();
 
-        if($user->ers_id != 203041 || $user->ers_id != 308224){
+        $allowed = false;
+
+        if($user->ers_id == 203041 || $user->ers_id == 308224){
+            $allowed = true;
+        }
+
+        if(!$allowed){
             abort(404);
         }
+
+
 
             $users = DB::table('users')
                 ->join('reviewers', 'users.id', '=', 'reviewers.user_id')
