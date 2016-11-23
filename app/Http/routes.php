@@ -24,6 +24,8 @@ Route::get('api/search/{query}', 'ApiController@search');
 Route::get('importpermissions', 'Import@importPermissions');
 //Route::get('importallcontacts', 'Import@importAll');
 
+Route::get('report', 'ReportController@index');
+
 Route::Controllers([
 
 	'auth' => 'Auth\AuthController',
