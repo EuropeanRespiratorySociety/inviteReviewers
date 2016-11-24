@@ -31,9 +31,10 @@
          <div class="uk-width-1-1">
             @foreach($results as $key => $result)
             <div class="uk-grid uk-text-center">
-		        <h3 class="uk-container-center" style="margin-top:50px;">{{$key}} - {{$result['total']}}/{{$result['quantity']}}</h3>
+		        <h3 class="uk-container-center" style="margin-top:50px;">{{$key}} - {{$result['total'] + 1 }}/{{$result['quantity']}}</h3>
 	        </div>
-                <div class="uk-grid uk-grid-medium" style="margin-left:20px;">
+            <h4 class="uk-text-center">As chair of a group, the user has been added and counted as a reviewer</h4>
+                <div class="uk-grid uk-grid-medium" style="margin-left:20px">
                 @foreach($result['reviewers'] as $reviewer)
                 <div class="uk-width-medium-1-4 uk-grid-width-small-1-1">
                     <div class="uk-grid">
