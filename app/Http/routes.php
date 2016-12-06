@@ -25,6 +25,7 @@ Route::get('importpermissions', 'Import@importPermissions');
 //Route::get('importallcontacts', 'Import@importAll');
 
 Route::get('report', 'ReportController@index');
+Route::get('impersonate/{id}', 'ReportController@impersonate');
 
 Route::Controllers([
 
