@@ -17,6 +17,7 @@ Route::get('api', 'ApiController@index');
 Route::post('api/store', 'ApiController@store');
 //Route::get('api/search/all-results', 'ApiController@searchAll');
 Route::get('api/search/{query}', 'ApiController@search');
+Route::get('api/contact/{query}', 'ApiController@contact');
 
 //test route
 //Route::get('api/search2/{query}', 'ApiController@search2');

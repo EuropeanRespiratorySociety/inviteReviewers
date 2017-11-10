@@ -10,13 +10,66 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectException;
+
+use App\Extensions\TokenStorage as TokenFile;
+
+
 class ApiController extends Controller
 {
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->username = env('ERS_API_USER');
+        $this->password = env('ERS_API_PW');
+        $this-> client = new Client();
+        $this->tokenStoragePath = '../storage';
+        $this->token = $this->setToken(); 
+
     }
+
+    private function auth($username, $password) {
+        $response = $this->client->post('https://api.ersnet.org/authentication', [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode([
+                'email' => $username,
+                'password' => $password,
+                'strategy' => 'local'
+            ])
+        ]);
+
+        return json_decode($response->getBody(), true);
+    }
+
+    private function setToken(){
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $file = new TokenFile('token', $this->tokenStoragePath);
+      
+        if($file->read('token') === null){	
+            $token = $this->auth($this->username, $this->password);
+            $token['expires'] = $now->add(new \DateInterval('PT23H'))->getTimestamp();
+            $file->write($token);
+            return $token['accessToken'];
+            // return $this->auth($this->username, $this->password);	
+        }
+
+        if($now->getTimestamp() >= $file->read('expires')){
+            $token = $this->auth($this->username, $this->password);
+            $token['expires'] = $now->add(new \DateInterval('PT23H'))->getTimestamp();
+            $file->write($token);
+            return $token['accessToken'];
+        }
+
+        if($now->getTimestamp() < $file->read('expires')){
+            return $file->read('token');
+        }
+}
 
     /**
      * Display a listing of the resource.
@@ -86,29 +139,56 @@ class ApiController extends Controller
      */
     public function search($query)
     {
-         $results = ErsContact::search($query)->get();
+        $res = $this->client->request('GET', 'https://api.ersnet.org/ers/contacts?pattern='.$query, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$this->token
+            ]    
+        ]);
 
-         $search = array();
+        $res = json_decode($res->getBody(), true);
 
-         if(!$results){
-            return $search;
-         }
+        $search = [];
+        if(!$res){
+            return $res;
+        }
 
-         foreach ($results as $result) {
+        foreach ($res['data'] as $result) {
+            $search[] = [
+                'title' => isset($result['Title']) ? $result['Title'] : '',
+                'last_name' => isset($result['LastName']) ? $result['LastName'] : '',
+                'first_name'=> isset($result['FirstName']) ? $result['FirstName'] : '',
+                'email'=> isset($result['SmtpAddress1']) ? $result['SmtpAddress1'] : '',
+                'city' => isset($result['MainCity']) ? $result['MainCity'] : '',
+                'country'=> isset($result['MainCountryCode']) ? $result['MainCountryCode'] : '',
+                'ers_id'=>  isset($result['ContactId']) ? $result['ContactId'] : '',
+            ];
+        }
 
-             $search[] = [
-                    'title' => $result->title,
-                    'last_name' => $result->last_name,
-                    'first_name'=> $result->first_name,
-                    'email'=> $result->email,
-                    'city'=> $result->city,
-                    'country'=> $result->country,
-                    'ers_id'=> $result->ers_id,
-             ];
-         }
+        return $search;
 
-         return $search;
+    }
 
+    public function contact($query) {
+        $res = $this->client->request('GET', 'https://api.ersnet.org/ers/contacts/'.$query, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$this->token
+            ]    
+        ]);
+
+        $res = json_decode($res->getBody(), true);
+        $contact = $res['data'];
+        $search = [
+            'title' => isset($contact['Title']) ? $contact['Title'] : '',
+            'last_name' => isset($contact['LastName']) ? $contact['LastName'] : '',
+            'first_name'=> isset($contact['FirstName']) ? $contact['FirstName'] : '',
+            'email'=> isset($contact['SmtpAddress1']) ? $contact['SmtpAddress1'] : '',
+            'city' => isset($contact['MainCity']) ? $contact['MainCity'] : '',
+            'country'=> isset($contact['MainCountryCode']) ? $contact['MainCountryCode'] : '',
+            'ers_id'=> isset($contact['ContactId']) ? $contact['ContactId']: '',
+        ];
+        return $search;
     }
 
     /**
@@ -119,9 +199,9 @@ class ApiController extends Controller
      */
     public function search2($query)
     {
-         $search = DB::table('all_ers_contacts')->where('last_name', '=', $query)->get();
+        $search = DB::table('all_ers_contacts')->where('last_name', '=', $query)->get();
 
-         return $search;
+        return $search;
 
     }
 
