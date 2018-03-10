@@ -5,9 +5,9 @@
   },
   "dependencies": {
     "bootstrap-sass": "^3.0.0",
-    "laravel-elixir": "^3.0.0",
-    "vue": "^0.12.16",
-    "vue-validator": "^1.4.4",
-    "vue-resource": "^0.1.16"
+    "laravel-elixir": "^5.0.0",
+    "vue": "^2.5.14",
+    "vue-validator": "^2.1.7",
+    "vue-resource": "^1.5.0"
   }
 }
