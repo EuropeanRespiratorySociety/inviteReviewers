@@ -65,7 +65,7 @@ class AuthController extends Controller
 
         $res = $this->auth($username, $password);
         $data = $res['data'];
-        dd($res['accessToken']);
+        // dd($res['accessToken']);
         $credentials['name'] = $data['FirstName'].' '.$data['LastName'];
         $credentials['last_name'] = $data['LastName'];
         $credentials['first_name'] = $data['FirstName'];
