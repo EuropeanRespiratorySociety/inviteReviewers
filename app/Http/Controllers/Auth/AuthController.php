@@ -11,6 +11,7 @@ use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -39,6 +40,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
+        $this-> client = new Client();
     }
 
      public function postLogin(Request $request)
@@ -61,37 +63,16 @@ class AuthController extends Controller
         $username = $credentials['username'];
         $password = $credentials['password'];
 
-        // Add a new service to the wrapper
-        SoapWrapper::add(function ($service) {
-            $service
-                ->name('ers')
-                ->wsdl(env('ERS_WEBSERVICE'))
-                ->trace(true)                                        
-                ->cache(WSDL_CACHE_NONE);
-        });
-
-        $data = [
-            'whitepaw' => env('ERS_WHITEPAW'),
-            'username'   => $credentials['username'],
-            'password'     => $credentials['password']
-        ];
-
-        // Using the added service
-          $result = SoapWrapper::service('ers', function ($service) use (&$data) {
-            
-                $data = $service->call('CheckLogin', [$data]);
-                              
-            
-        });
-       
-            $credentials['name'] = $data->fname.' '.$data->lname;
-            $credentials['last_name'] = $data->lname;
-            $credentials['first_name'] = $data->fname;
-            $credentials['title'] = $data->title;
-            $credentials['email'] = $data->email;
-            $credentials['ers_id'] = $data->partnerId;
-            $credentials['group'] = $data->group1;
-            $credentials['isInDB'] = $data->isInDB;
+        $res = $this->auth($username, $password);
+        $data = $res['data'];
+        dd($res['accessToken']);
+        $credentials['name'] = $data['FirstName'].' '.$data['LastName'];
+        $credentials['last_name'] = $data['LastName'];
+        $credentials['first_name'] = $data['FirstName'];
+        $credentials['title'] = $data['Title'];
+        $credentials['email'] = $data['SmtpAddress1'];
+        $credentials['ers_id'] = $data['ContactId'];
+        $credentials['group'] = $data['AssemblyGroup1'];
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             return $this->handleUserWasAuthenticated($request, $throttles);
@@ -145,5 +126,20 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+     
+    private function auth($username, $password) {
+        return json_decode(
+            $this->client->post('https://api.ersnet.org/ers/contacts/login', [
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode([
+                    'username' => $username,
+                    'password' => $password
+                ])
+            ])->getBody(),
+            true);
     }
 }

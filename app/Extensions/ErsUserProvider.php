@@ -60,9 +60,9 @@ class ErsUserProvider implements UserProvider
     {
     	//test if user is in myERS reject if not
 
-    	if(!$credentials['isInDB']){
-    		return null;
-    	}
+    	// if(!$credentials['isInDB']){
+    	// 	return null;
+    	// }
 
 
     	//is the user in local DB?
@@ -167,7 +167,6 @@ class ErsUserProvider implements UserProvider
      */
 
     protected function userCreateOrUpdate($credentials, $id){
-
     	$user = [
 			 	'name' 		=> $credentials['name'],
 			 	'username'	=> $credentials['username'],
@@ -178,7 +177,7 @@ class ErsUserProvider implements UserProvider
 			 	] ;
 
     	if(!$id) {
-			User::Create($user);
+            User::Create($user);
 		}
 		
 		if($id) {
