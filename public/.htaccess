@@ -1,4 +1,7 @@
 <IfModule mod_rewrite.c>
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
