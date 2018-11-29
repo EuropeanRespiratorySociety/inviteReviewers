@@ -28,7 +28,9 @@ class ReportController extends Controller
 
         $allowed = false;
 
-        if($user->ers_id == 203041 || $user->ers_id == 308224){
+        if($user->ers_id == 203041
+            || $user->ers_id == 308224
+            || $user->ers_id == 408341) {
             $allowed = true;
         }
 
